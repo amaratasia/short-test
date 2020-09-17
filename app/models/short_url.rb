@@ -32,7 +32,7 @@ class ShortUrl < ApplicationRecord
   end
 
   def self.top_urls
-    order(:click_count).limit(100).as_json(only: %i[title full_url short_code click_count])
+    order(click_count: :desc).limit(100).as_json(only: %i[title full_url short_code click_count])
     # TO DO cache top 100
   end
 
