@@ -5,13 +5,22 @@ class ShortUrl < ApplicationRecord
   validate :validate_full_url
   validates :full_url, presence: true
 
-  before_create do
-    begin
-      self.short_code = generate_hash
-    end while self.class.exists?(short_code: short_code)
-  end
+    before_create do
+      begin
+        self.short_code = generate_hash
+      end while self.class.exists?(short_code: short_code)
+    end
+
+    after_create do
+      UpdateTitleJob.perform_later(id)
+    end
 
   def update_title!
+    response = HTTParty.get(full_url)
+    return nil unless response.success?
+
+    title = Nokogiri::HTML::Document.parse(response.body).title
+    update_column(:title, title)
   end
 
   def object
