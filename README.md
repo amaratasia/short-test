@@ -27,3 +27,10 @@ d# Intial Setup
 # Checking your short URL redirect
 
     curl -I localhost:3000/abc
+
+# Algorithm to generate short code
+
+- We use SHA2 with Base 64 Digest to encode the URL
+- We add salt to URL before encoding to ensure duplicate URLs are treated separately and for security reasons.
+- Take first 8 chars in URL to form short code
+- Validate if URL already exists in DB (DB Index also handles this case)
