@@ -22,6 +22,11 @@ class ShortUrl < ApplicationRecord
     update_column(:click_count, click_count+1)
   end
 
+  def self.top_urls
+    order(:click_count).limit(100).as_json(only: %i[title full_url short_code click_count])
+    # TO DO cache top 100
+  end
+
   private
 
   def validate_full_url

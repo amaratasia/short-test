@@ -6,6 +6,8 @@ class ShortUrlsController < ApplicationController
   before_action :short_url, only: :show
 
   def index
+    url_objects = ShortUrl.top_urls
+    render json: { urls: url_objects }, status: :ok
   end
 
   def create
