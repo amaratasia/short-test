@@ -14,6 +14,10 @@ class ShortUrl < ApplicationRecord
   def update_title!
   end
 
+  def object
+    as_json(only: %i[title full_url short_code click_count])
+  end
+
   private
 
   def validate_full_url
