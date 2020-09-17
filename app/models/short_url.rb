@@ -18,6 +18,10 @@ class ShortUrl < ApplicationRecord
     as_json(only: %i[title full_url short_code click_count])
   end
 
+  def increment_visit!
+    update_column(:click_count, click_count+1)
+  end
+
   private
 
   def validate_full_url
